@@ -17,14 +17,28 @@ function plugin_uprofile_del_install($action) {
 		return print_msg( 'warning', $lang['uprofile_del:uprofile_del'], $lang['uprofile_del:uprofile_error'], 'javascript:history.go(-1)' );
 	}
 	
+	$db_update = array(
+		array(
+			'table'  => 'users',
+			'action' => 'cmodify',
+			'fields' => array(
+				array('action' => 'cmodify', 'name' => 'user_act', 'type' => 'int(6)', 'params' => "DEFAULT '0' NOT NULL"),
+			)
+		),
+	);
+	
 	switch ($action) {
 		case 'confirm':
 			generate_install_page('uprofile_del', $lang['uprofile_del:install']);
 			break;
 		case 'autoapply':
 		case 'apply':
-			plugin_mark_installed('uprofile_del');
-			create_uprofile_del_urls();
+			if (fixdb_plugin_install('uprofile_del', $db_update, 'install', ($action == 'autoapply') ? true : false)) {
+				plugin_mark_installed('uprofile_del');
+				create_uprofile_del_urls();
+			} else {
+				return false;
+			}
 			
             extra_commit_changes();
 			

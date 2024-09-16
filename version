@@ -4,9 +4,10 @@
  
 ID: uprofile_del
 Name: Удаление профиля
-Version: 0.1
-Acts: ppages, plugin.uprofile
+Version: 0.2
+Acts: index, ppages, plugin.uprofile
 File: uprofile_del.php
+Config: config.php
 Install: install.php
 Deinstall: deinstall.php
 Type: plugin
